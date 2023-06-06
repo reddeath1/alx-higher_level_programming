@@ -12,7 +12,7 @@ if num < 0:
     lastNum = -(lastNum)
 
 if lastNum > 5:
-    string = "and is greater than 5"
+    str = "and is greater than 5"
 elif lastNum == 0:
     str = "and is 0"
 elif lastNum < 6:
