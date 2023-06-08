@@ -15,7 +15,7 @@ else:
 print(args.format(argsc))
 
 x = 0
-for arg in sys.argv:
+for argument in sys.argv:
     if x != 0:
-        print("{:d}: {:s}".format(x, arg))
+        print("{:d}: {:s}".format(x, argument))
     x += 1
