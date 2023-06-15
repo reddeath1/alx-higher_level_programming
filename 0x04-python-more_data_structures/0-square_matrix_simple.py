@@ -1,8 +1,7 @@
 #!/usr/bin/python3
 
-def print_list_integer(my_list=[]):
+def square_matrix_simple(matrix=[]):
     """
-    print list of given integers
+    Compute the square value of all integers of a matrix's
     """
-    for i in my_list:
-        print("{:d}".format(i))
+    return ([[(x**2) for x in rows] for rows in matrix])
