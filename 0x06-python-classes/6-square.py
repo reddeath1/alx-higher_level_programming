@@ -1,4 +1,6 @@
 #!/usr/bin/python3
+""" Declare class Square """
+
 
 class Square:
     """Class that has attributes. Instantiation with size
