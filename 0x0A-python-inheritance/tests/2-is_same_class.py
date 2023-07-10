@@ -4,7 +4,6 @@
 @author: Frank Galos
 """
 
-
 def is_same_class(obj, a_class):
     """
     Check if two objects are the same class
