@@ -1,114 +1,107 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 """
+Class Module
+
 @author: Frank Galos
 """
 import json
 
 
 class Base:
-    """
-    Class Base
-
+    """ base class
     Attributes:
-        nb_objects (int): Private class attribute
+        _nb_objects: The number of objects created
+        id: id of object
     """
-    __objects = 0
+    __nb_objects = 0
 
     def __init__(self, id=None):
+        """initiation method
+        args:
+            id: id of object
         """
-        Class constructor
-
-        Attributes:
-            id (int): The integer input for id
-        """
-        if id is None:
-            Base.__objects += 1
-            self.id = Base.__objects
-        else:
+        if id is not None:
             self.id = id
+        else:
+            Base.__nb_objects += 1
+            self.id = Base.__nb_objects
+
+    def integer_validator(self, name, value):
+        """check if it's an integer"""
+        if type(value) is not int:
+            raise TypeError('{} must be an integer'.format(name))
+        if value <= 0:
+            raise ValueError('{} must be > 0'.format(name))
+
+    def integer_validator2(self, name, value):
+        """check if  it's an integer"""
+        if type(value) is not int:
+            raise TypeError('{} must be an integer'.format(name))
+        if value < 0:
+            raise ValueError('{} must be >= 0'.format(name))
 
     @staticmethod
     def to_json_string(list_dictionaries):
+        """return JSON string
+        args:
+            list_dictionaries:The list of dictionaries
+        return:
+            return serialized list
         """
-        Return a json string representation
+        return json.dumps(list_dictionaries or [])
 
-        Attributes:
-            list_dictionaries (json): The inputted jason list of dictionaries
-        Return:
-            The json repreentation
+    @staticmethod
+    def from_json_string(str):
+        """json to string static method
+        args:
+            str: json object string type
+        return:
+            list of json string
         """
-        if list_dictionaries is None or not list_dictionaries:
-            return '[]'
-        return json.dumps(list_dictionaries)
+        if str:
+            return json.loads(str)
+        return []
 
     @classmethod
     def save_to_file(cls, list_objs):
+        """write a JSON string to a file
+        args:
+            list_objs: list of objects
+        return:
+            na
         """
-        Write the json string repressentation list object to a file
-
-        Attribute:
-            list_objs (list): The object list to save
-
-        Return:
-            json object to save in file
-        """
-        file_name = cls.__name__ + ".json"
-        str = []
-        if list_objs is not None:
-            for x in list_objs:
-                str.append(cls.to_dictionary(i))
-        with open(file_name, 'w', encoding='utf-8') as file:
-            file.write(cls.to_json_string(str))
-
-    @staticmethod
-    def from_json_string(json_string):
-        """
-        Return the list of json string representation
-
-        Attribute:
-            json_string (string): The json object
-
-        Return:
-            json object to dictionary
-        """
-        if json_string is None or len(json_string) == 0:
-            return []
-        return json.loads(json_string)
+        if list_objs:
+            j = cls.to_json_string([obj.to_dictionary() for obj in list_objs])
+        else:
+            j = '[]'
+        with open(cls.__name__ + '.json', 'w') as f:
+            f.write(j)
 
     @classmethod
     def create(cls, **dictionary):
-        """
-        Return an instance with all attributes already set
-
-        Attribute:
-            dictionary (dict): The inooutted dictionary
-
-        Return:
-            An instance with all attributers already set
+        """returns instance with all attributes set
+        args:
+            dictionary: The double pointer
+        return:
+            instance with set attribute
         """
         if cls.__name__ == "Rectangle":
-            dum = cls(1, 1)
+            dummy_data = cls(1, 1)
         if cls.__name__ == "Square":
-            dum = cls(1)
-        dummy.update(**dictionary)
-        return dum
+            dummy_data = cls(1)
+        dummy_data.update(**dictionary)
+        return dummy_data
 
     @classmethod
     def load_from_file(cls):
-        """
-        Return a list of instances
-
-        Return:
-            A list of instances
-        """
-        file_name = cls.__name__ + ".json"
-        json_obj = []
+        '''Returns a list of instances
+        return:
+            list of instance json of string
+        '''
         try:
-            with open(file_name, 'r', encoding='utf-8') as file:
-                json_obj = cls.from_json_string(file.read())
-            for key, value in enumerate(json_obj):
-                json_obj[key] = cls.create(**json_obj[key])
-        except:
-            pass
-        return json_obj
+            filename = cls.__name__ + '.json'
+            with open(filename, mode='r') as f:
+                d = cls.from_json_string(f.read())
+            return [cls.create(**x) for x in d]
+        except FileNotFoundError:
+            return []
