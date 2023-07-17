@@ -1,19 +1,21 @@
 #!/usr/bin/python3
 """
-Class Rectangle Module
+Class Module
+
+@author: Frank Galos
 """
 from models.base import Base
 
 
 class Rectangle(Base):
-    """Rectangle class """
+    """Rectangle class"""
 
     def __init__(self, width, height, x=0, y=0, id=None):
-        """instance initialization method
+        """initializer method
 
         args:
-            width: width of rectangle
-            height: height of rectangle
+            width: width of a rectangle
+            height: height of a rectangle
             x: init variable
             y: init variable
         """
@@ -24,24 +26,24 @@ class Rectangle(Base):
         self.y = y
 
     def area(self):
-        """returns area of width and height"""
+        """return the area of width & height"""
         return self.width * self.height
 
     def update(self, *args, **kwargs):
-        """update attributes"""
+        """update the attributes"""
         if args:
-            list_me = ['id', 'width', 'height', 'x', 'y']
-            i = 0
+            li = ['id', 'width', 'height', 'x', 'y']
+            x = 0
             for arg in args:
-                setattr(self, list_me[i], arg)
-                i += 1
+                setattr(self, li[x], arg)
+                x += 1
         else:
             for key, value in kwargs.items():
                 setattr(self, key, value)
 
     def display(self):
-        """prints into stdout
-        return: na
+        """print into stdout
+        return: no
         """
         for row in range(self.y):
             print()
@@ -55,29 +57,29 @@ class Rectangle(Base):
                                                 self.__width, self.__height)
 
     def to_dictionary(self):
-        """returns dict representation of Rectangle"""
+        """return dict representation of Rectangle"""
         return {'x': self.x, 'y': self.y, 'id': self.id,
                 'height': self.height, 'width': self.width}
 
     @property
     def width(self):
-        """ getter width method"""
+        """getter with method"""
         return self.__width
 
     @width.setter
     def width(self, value):
-        """setter width method"""
+        """setter with  method"""
         self.integer_validator('width', value)
         self.__width = value
 
     @property
     def height(self):
-        """height getter method"""
+        """getter height method"""
         return self.__height
 
     @height.setter
     def height(self, value):
-        """height setter method"""
+        """setter height method"""
         self.integer_validator('height', value)
         self.__height = value
 
