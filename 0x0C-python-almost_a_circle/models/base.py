@@ -147,3 +147,46 @@ class Base:
                 return obj_list
         except FileNotFoundError:
             return []
+
+     @staticmethod
+    def draw(list_rectangles, list_squares):
+        screen = turtle.Screen()
+        screen.setup(800, 600)
+        screen.title("Drawing Rectangles and Squares")
+
+        drawer = turtle.Turtle()
+
+        def draw_rectangle(x, y, width, height):
+            drawer.penup()
+            drawer.goto(x, y)
+            drawer.pendown()
+            for _ in range(2):
+                drawer.forward(width)
+                drawer.left(90)
+                drawer.forward(height)
+                drawer.left(90)
+
+        def draw_square(x, y, size):
+            draw_rectangle(x, y, size, size)
+
+        drawer.speed(1)
+
+        drawer.color("blue")
+
+        for rectangle in list_rectangles:
+            x = rectangle.x
+            y = rectangle.y
+            width = rectangle.width
+            height = rectangle.height
+            draw_rectangle(x, y, width, height)
+
+        drawer.color("red")
+
+        for square in list_squares:
+            x = square.x
+            y = square.y
+            size = square.size
+            draw_square(x, y, size)
+
+        screen.exitonclick()
+
