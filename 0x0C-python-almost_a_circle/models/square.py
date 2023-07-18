@@ -1,12 +1,14 @@
 #!/usr/bin/python3
 """
-Square class Module
+Square class
+
+@author: Frank Galos
 """
 from models.rectangle import Rectangle
 
 
 class Square(Rectangle):
-    """Square class
+    """The square Class
     """
 
     def __init__(self, size, x=0, y=0, id=None):
@@ -20,7 +22,7 @@ class Square(Rectangle):
         super().__init__(size, size, x, y, id)
 
     def __str__(self):
-        """prints method
+        """print method
         return:
             formatted list
         """
@@ -30,37 +32,37 @@ class Square(Rectangle):
 
     @property
     def size(self):
-        """width getter method
+        """getter width method
         return:
-            size of width and height
+            The size of width and height
         """
         return self.width
 
     @size.setter
     def size(self, value):
-        """width and height setter method
+        """The width and height setter method
         args:
-            value: size value
+            value: The size value
         return:
-            null
+            no
         """
         self.width = value
         self.height = value
 
     def update(self, *args, **kwargs):
-        """ the update square method
+        """update square method
         args:
-            args: the pointer to arguments
-            kwargs: the double pointer to key word arguments
+            args: The pointer to arguments
+            kwargs: The double pointer
         return:
-            null
+            no
         """
 
         if args:
             x = 0
-            list_me = ['id', 'size', 'x', 'y']
+            li = ['id', 'size', 'x', 'y']
             for arg in args:
-                setattr(self, list_me[x], arg)
+                setattr(self, li[x], arg)
                 x += 1
             return
         else:
@@ -70,6 +72,6 @@ class Square(Rectangle):
     def to_dictionary(self):
         """return a dictionary of Square
         return:
-            dictionary
+            dict
         """
         return {'id': self.id, 'x': self.x, 'size': self.size, 'y': self.y}
