@@ -106,17 +106,16 @@ class Base:
         except FileNotFoundError:
             return []
 
-     @classmethod
-     def save_to_file_csv(cls, list_objs):
-        file = cls.__name__ + ".csv"
-        with open(file, mode="w", newline="", encoding="utf-8") as file:
-            writer = csv.writer(file)
-            if list_objs is not None:
-                for obj in list_objs:
-                    if cls.__name__ == "Rectangle":
-                        writer.writerow([obj.id, obj.width, obj.height, obj.x, obj.y])
-                    elif cls.__name__ == "Square":
-                        writer.writerow([obj.id, obj.size, obj.x, obj.y])
+    @classmethod
+    def save_to_file(cls, list_objs):
+        filename = cls.__name__ + ".json"
+        with open(filename, mode="w", encoding="utf-8") as file:
+            if list_objs is None:
+                file.write("[]")
+            else:
+                obj_list = [obj.to_dictionary() for obj in list_objs]
+                json_str = cls.to_json_string(obj_list)
+                file.write(json_str)
 
     @classmethod
     def load_from_file_csv(cls):
@@ -148,7 +147,7 @@ class Base:
         except FileNotFoundError:
             return []
 
-     @staticmethod
+    @staticmethod
     def draw(list_rectangles, list_squares):
         screen = turtle.Screen()
         screen.setup(800, 600)
