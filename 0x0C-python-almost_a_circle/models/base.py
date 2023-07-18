@@ -105,3 +105,45 @@ class Base:
             return [cls.create(**x) for x in d]
         except FileNotFoundError:
             return []
+
+     @classmethod
+     def save_to_file_csv(cls, list_objs):
+        file = cls.__name__ + ".csv"
+        with open(file, mode="w", newline="", encoding="utf-8") as file:
+            writer = csv.writer(file)
+            if list_objs is not None:
+                for obj in list_objs:
+                    if cls.__name__ == "Rectangle":
+                        writer.writerow([obj.id, obj.width, obj.height, obj.x, obj.y])
+                    elif cls.__name__ == "Square":
+                        writer.writerow([obj.id, obj.size, obj.x, obj.y])
+
+    @classmethod
+    def load_from_file_csv(cls):
+        file = cls.__name__ + ".csv"
+        try:
+            with open(file, mode="r", newline="", encoding="utf-8") as file:
+                reader = csv.reader(file)
+                obj_list = []
+                for row in reader:
+                    if cls.__name__ == "Rectangle" and len(row) == 5:
+                        obj_dict = {
+                            "id": int(row[0]),
+                            "width": int(row[1]),
+                            "height": int(row[2]),
+                            "x": int(row[3]),
+                            "y": int(row[4])
+                        }
+                    elif cls.__name__ == "Square" and len(row) == 4:
+                        obj_dict = {
+                            "id": int(row[0]),
+                            "size": int(row[1]),
+                            "x": int(row[2]),
+                            "y": int(row[3])
+                        }
+                    else:
+                        continue
+                    obj_list.append(cls.create(**obj_dict))
+                return obj_list
+        except FileNotFoundError:
+            return []
