@@ -18,7 +18,7 @@ if __name__ == '__main__':
     db = MySQLdb.connect(host='localhost', user=username,
                          passwd=password, db=dbn, port=3306)
     cursor = db.cursor()
-    num_rows = cur.execute("SELECT cities.name FROM cities WHERE state_id =\
+    num_rows = cursor.execute("SELECT cities.name FROM cities WHERE state_id =\
                            (SELECT id FROM states WHERE name LIKE BINARY %s)\
                            ORDER BY cities.id;", (state_name, ))
     rows = cursor.fetchall()
