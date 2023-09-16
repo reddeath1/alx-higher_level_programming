@@ -21,7 +21,7 @@ if __name__ == '__main__':
                            .format(username, password, dbn))
     # create session object class from database engine
     Session = sessionmaker(bind=engine)
-    # create instance of new custom session class
+    # create instance of new session class
     session = Session()
     california = State(name="California")
     california.cities = [City(name="San Francisco")]

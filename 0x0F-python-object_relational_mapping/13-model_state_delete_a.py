@@ -7,11 +7,10 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy import (create_engine)
 import sys
 
-
 if __name__ == '__main__':
     args = sys.argv
     if len(args) != 4:
-        print("Usage: {} username password database_name".format(args[0]))
+        print("Usage: {} username password database name".format(args[0]))
         exit(1)
     username = args[1]
     password = args[2]
@@ -20,12 +19,9 @@ if __name__ == '__main__':
                            .format(username, password, dbn))
     # create session object class from database engine
     Session = sessionmaker(bind=engine)
-    # create instance of new session class
+    # create instance of custom session class
     session = Session()
-    states = session.query(State).filter(State.name.contains('a'))\
-                    .order_by(State.id)
-    if states is not None:
-        for state in states:
-            print('{}: {}'.format(state.id, state.name))
-    else:
-        print('Nothing')
+    states = session.query(State).filter(State.name.contains('a'))
+    for state in states:
+        session.delete(state)
+    session.commit()

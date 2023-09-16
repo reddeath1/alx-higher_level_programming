@@ -2,16 +2,16 @@
 """
 @author: Frank Galos
 """
-from model_state import Base, State
+from relationship_state import Base, State
+from relationship_city import City
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy import (create_engine)
+from sqlalchemy import create_engine
 import sys
-
 
 if __name__ == '__main__':
     args = sys.argv
     if len(args) != 4:
-        print("Usage: {} username password database_name".format(args[0]))
+        print("Usage: {} username password database name".format(args[0]))
         exit(1)
     username = args[1]
     password = args[2]
@@ -22,10 +22,9 @@ if __name__ == '__main__':
     Session = sessionmaker(bind=engine)
     # create instance of new session class
     session = Session()
-    states = session.query(State).filter(State.name.contains('a'))\
-                    .order_by(State.id)
-    if states is not None:
-        for state in states:
-            print('{}: {}'.format(state.id, state.name))
-    else:
-        print('Nothing')
+    rows = session.query(State).all()
+    for state in rows:
+        print("{}: {}".format(state.id, state.name))
+        for city in state.cities:
+            print("    {}: {}".format(city.id, city.name))
+    session.close()
