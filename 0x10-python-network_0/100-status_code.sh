@@ -1,14 +1,11 @@
 #!/bin/bash
-# Bash script to extract the HTTP status code from a previous curl request
+# Bash script to send a request and display the status code
 
-# Check if an argument (the previous response) is provided
+# Check if an argument (URL) is provided
 if [ $# -ne 1 ]; then
-  echo "Usage: $0 <previous_response>"
+  echo "Usage: $0 <URL>"
   exit 1
 fi
 
-# Extract the HTTP status code using awk
-http_code=$(echo "$1" | awk '{print $NF}')
-
-# Display the status code
-echo "Status code: $http_code"
+# Use curl to send the request and display the status code
+curl -s -I -o /dev/null -w "%{http_code}" "$1"
